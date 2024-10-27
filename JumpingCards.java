@@ -1,27 +1,25 @@
 import java.util.*;
 
 public class JumpingCards {
-    static HashSet<String> playboard = new HashSet<>(); // Карты на игровом поле
-    static HashSet<String> playerCards = new HashSet<>(); // Карты игрока
-    static HashSet<String> computerCards = new HashSet<>(); // Карты компьютера
+    static HashSet<String> playboard = new HashSet<>();
+    static HashSet<String> playerCards = new HashSet<>();
+    static HashSet<String> computerCards = new HashSet<>();
 
     static final String[] CARD_SUITS = {"C", "H", "D", "S"};
     static Random rand = new Random();
 
-    // Метод генерации уникальных карт на игровом поле
     public static void generateUniqueCards() {
         playboard.clear();
         while (playboard.size() < 6) {
             String suit = CARD_SUITS[rand.nextInt(CARD_SUITS.length)];
-            int number = rand.nextInt(13) + 1; // Диапазон 1-13
+            int number = rand.nextInt(13) + 1;
             playboard.add(suit + number);
         }
     }
 
-    // Метод, имитирующий бросок кубика и выбор карты для игрока
     public static void rollDieAndAssignCardToPlayer() {
         while (playerCards.size() < 3) {
-            int dieValue = rand.nextInt(6) + 1; // Генерируем число от 1 до 6
+            int dieValue = rand.nextInt(6) + 1;
             String selectedCard = (String) playboard.toArray()[dieValue - 1];
             if (!playerCards.contains(selectedCard)) {
                 playerCards.add(selectedCard);
@@ -29,7 +27,6 @@ public class JumpingCards {
         }
     }
 
-    // Метод для выбора карт для компьютера (оставшиеся карты)
     public static void assignRemainingCardsToComputer() {
         for (String card : playboard) {
             if (!playerCards.contains(card) && computerCards.size() < 3) {
@@ -38,16 +35,14 @@ public class JumpingCards {
         }
     }
 
-    // Метод для подсчёта очков (сумма числовых значений карт)
     public static int calculateScore(Set<String> cards) {
         int score = 0;
         for (String card : cards) {
-            score += Integer.parseInt(card.substring(1)); // Берём числовую часть карты
+            score += Integer.parseInt(card.substring(1));
         }
         return score;
     }
 
-    // Метод для отображения конечного результата игры
     public static String determineWinner() {
         int playerScore = calculateScore(playerCards);
         int computerScore = calculateScore(computerCards);
